@@ -11,6 +11,7 @@ require (
 	github.com/spf13/viper v1.10.1
 	gorm.io/driver/postgres v1.3.9
 	gorm.io/gorm v1.23.7
+	gorm.io/plugin/dbresolver v1.2.3
 )
 
 require (
