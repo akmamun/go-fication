@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"gorm.io/gorm"
+	"chi-boilerplate/infra/database"
 )
 
 type GormRepository struct {
-	db *gorm.DB
+	db *database.DB
 }
 
-func NewGormRepository(db *gorm.DB) GormRepository {
+func NewGormRepository(db *database.DB) GormRepository {
 	return GormRepository{
 		db: db,
 	}

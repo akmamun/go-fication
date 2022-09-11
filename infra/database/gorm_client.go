@@ -4,12 +4,24 @@ import (
 	"chi-boilerplate/infra/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"time"
 )
 
-func DBConnection(connStr string) (*gorm.DB, error) {
+type DB struct {
+	Database *gorm.DB
+}
+
+func DBConnection(dsn string) (*DB, error) {
+
+	//logMode := viper.GetBool("DB_LOG_MODE")
+	//	debug := viper.GetBool("DEBUG")
+	//	loglevel := logger.Silent
+	//
+	//	if logMode {
+	//		loglevel = logger.Info
+	//	}
 	db, err := gorm.Open(postgres.New(postgres.Config{
-		DSN: connStr,
-		//DSN:                  "postgres://mamun:123@localhost:5432/test_pg",
+		DSN:                  dsn,
 		PreferSimpleProtocol: true, // disables implicit prepared statement usage
 	}), &gorm.Config{})
 
@@ -17,12 +29,16 @@ func DBConnection(connStr string) (*gorm.DB, error) {
 		logger.Fatalf("%v", err)
 	}
 	sqlDB, err := db.DB()
+	sqlDB.SetConnMaxIdleTime(time.Minute * 1)
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(100)
+	sqlDB.SetConnMaxLifetime(time.Hour)
 	err = sqlDB.Ping()
 	if err != nil {
 		logger.Fatalf("%v", err)
 	}
 
-	return db, err
+	return &DB{Database: db}, nil
 }
 
 //

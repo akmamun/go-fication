@@ -10,11 +10,11 @@ type ExampleRepo interface {
 }
 
 func (r GormRepository) GetExamples() (exps []*models.Example, err error) {
-	err = r.db.Find(&exps).Error
+	err = r.db.Database.Find(&exps).Error
 	return
 }
 
 func (r GormRepository) CreateExample(exp *models.Example) (err error) {
-	err = r.db.Create(exp).Error
+	err = r.db.Database.Create(exp).Error
 	return
 }

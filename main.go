@@ -48,9 +48,9 @@ func main() {
 	//if err := srvr.ListenAndServe(); err != http.ErrServerClosed {
 	//	logger.Fatalf("bal ama")
 	//}
-	router := chi.NewRouter()
 	repo := repository.NewGormRepository(db)
 	exmCrtl := controllers.NewHandler(repo)
+	router := chi.NewRouter()
 	router.Group(func(r chi.Router) {
 		r.Get("/test", exmCrtl.GetData)
 		r.Post("/test", exmCrtl.CreateData)
