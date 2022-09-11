@@ -7,16 +7,16 @@ import (
 	"net/http"
 )
 
-type Handler struct {
+type EmpHandler struct {
 	repo repository.ExampleRepo
 }
 
-func NewHandler(repo repository.ExampleRepo) Handler {
-	return Handler{
+func NewHandler(repo repository.ExampleRepo) *EmpHandler {
+	return &EmpHandler{
 		repo: repo,
 	}
 }
-func (h Handler) GetData(w http.ResponseWriter, request *http.Request) {
+func (h *EmpHandler) GetData(w http.ResponseWriter, request *http.Request) {
 	data, err := h.repo.GetExamples()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -25,7 +25,7 @@ func (h Handler) GetData(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(data)
 }
-func (h Handler) CreateData(w http.ResponseWriter, request *http.Request) {
+func (h *EmpHandler) CreateData(w http.ResponseWriter, request *http.Request) {
 	example := new(models.Example)
 	err := json.NewDecoder(request.Body).Decode(&example)
 	if err != nil {
