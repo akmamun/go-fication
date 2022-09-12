@@ -22,7 +22,7 @@ func GetDNSConfig() string {
 	masterHost := viper.GetString("MASTER_DB_HOST")
 	masterPort := viper.GetString("MASTER_DB_PORT")
 	masterSslMode := viper.GetString("MASTER_SSL_MODE")
-	//
+
 	//replicaName := viper.GetString("REPLICA_DB_NAME")
 	//replicaUser := viper.GetString("REPLICA_DB_USER")
 	//replicaPassword := viper.GetString("REPLICA_DB_PASSWORD")
