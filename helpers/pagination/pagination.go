@@ -6,7 +6,8 @@ import (
 )
 
 type Param struct {
-	Page    int64
+	DB      *database.DB
+	Offset  int64
 	Limit   int64
 	OrderBy string
 	Search  string
@@ -17,32 +18,28 @@ type Result struct {
 	TotalPage   int64       `json:"total_page"`
 	Offset      int64       `json:"offset"`
 	Limit       int64       `json:"limit"`
-	Page        int64       `json:"page"`
 	PrevPage    int64       `json:"prev_page"`
 	NextPage    int64       `json:"next_page"`
-	Data        interface{} `json:"data"`
+	Results     interface{} `json:"results"`
 }
 
 func Paginate(param *Param, resultData interface{}) *Result {
-	var db *database.DB
+	db := param.DB
 
-	if param.Page < 1 {
-		param.Page = 1
-	}
+	var result Result
+	var count, offset int64
+	done := make(chan bool, 1)
+
+	go countResults(db, resultData, done, &count)
+
 	if param.Limit == 0 {
 		param.Limit = 10
 	}
 
-	done := make(chan bool, 1)
-	var result Result
-	var count, offset int64
-
-	go countResults(db, resultData, done, &count)
-
-	if param.Page == 1 {
+	if param.Offset == 0 {
 		offset = 0
 	} else {
-		offset = (param.Page - 1) * param.Limit
+		offset = param.Offset
 	}
 	db.Database.Offset(int(offset)).
 		Limit(int(param.Limit)).
@@ -52,23 +49,22 @@ func Paginate(param *Param, resultData interface{}) *Result {
 	<-done
 
 	result.TotalRecord = count
-	result.Data = resultData
-	result.Page = param.Page
+	result.Results = resultData
 
 	result.Offset = offset
 	result.Limit = param.Limit
 	result.TotalPage = int64(math.Ceil(float64(count) / float64(param.Limit)))
 
-	if param.Page > 1 {
-		result.PrevPage = param.Page - 1
+	if param.Offset > 1 {
+		result.PrevPage = param.Offset - 1
 	} else {
-		result.PrevPage = param.Page
+		result.PrevPage = param.Offset
 	}
 
-	if param.Page == result.TotalPage {
-		result.NextPage = param.Page
+	if param.Offset == result.TotalPage {
+		result.NextPage = param.Offset
 	} else {
-		result.NextPage = param.Page + 1
+		result.NextPage = param.Offset + 1
 	}
 	return &result
 }

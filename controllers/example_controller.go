@@ -5,6 +5,7 @@ import (
 	"chi-boilerplate/repository"
 	"encoding/json"
 	"net/http"
+	"strconv"
 )
 
 type EmpHandler struct {
@@ -17,13 +18,18 @@ func NewHandler(repo repository.ExampleRepo) *EmpHandler {
 	}
 }
 func (h *EmpHandler) GetData(w http.ResponseWriter, request *http.Request) {
-	data, err := h.repo.GetExamples()
+	q := request.URL.Query()
+	limit, _ := strconv.Atoi(q.Get("limit"))
+	offset, _ := strconv.Atoi(q.Get("offset"))
+
+	data, err := h.repo.GetExamples(int64(limit), int64(offset))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(data)
+	json.NewEncoder(w).Encode(&data)
 }
 func (h *EmpHandler) CreateData(w http.ResponseWriter, request *http.Request) {
 	example := new(models.Example)
