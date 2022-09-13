@@ -34,7 +34,7 @@ func GetDNSConfig() string {
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		masterHost, masterUser, masterPassword, masterName, masterPort, masterSslMode,
 	)
-
+	//
 	//replicaDSN := fmt.Sprintf(
 	//	"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 	//	replicaHost, replicaUser, replicaPassword, replicaName, replicaPort, replicaSslMode,

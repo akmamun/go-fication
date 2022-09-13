@@ -2,58 +2,68 @@ package logger
 
 import (
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"os"
+	"strings"
 )
 
 var logger zerolog.Logger
 
 type LogLevel string
 
-const (
-	Infof  LogLevel = "Info"
-	Warnf  LogLevel = "Warn"
-	Debugf LogLevel = "Debug"
-	Errorf LogLevel = "Error"
-	Fatalf LogLevel = "Fatal"
-)
+func SetLogLevel(level string) {
+	var l zerolog.Level
 
-func SetLogLevel(level zerolog.Level) {
-	zerolog.SetGlobalLevel(level)
+	switch strings.ToLower(level) {
+	case "error":
+		l = zerolog.ErrorLevel
+	case "warn":
+		l = zerolog.WarnLevel
+	case "info":
+		l = zerolog.InfoLevel
+	case "debug":
+		l = zerolog.DebugLevel
+	default:
+		l = zerolog.InfoLevel
+	}
+	zerolog.SetGlobalLevel(l)
+	skipFrameCount := 3
+	logger = zerolog.New(os.Stdout).With().Timestamp().CallerWithSkipFrameCount(zerolog.CallerSkipFrameCount + skipFrameCount).Logger()
 }
 
 func Info(message string, args ...interface{}) {
 	if logger.GetLevel() == zerolog.InfoLevel {
-		logger.Info().Msgf(message, args...)
+		log.Info().Msgf(message, args...)
 	}
 }
 
 func Debug(message string, args ...interface{}) {
 	if logger.GetLevel() == zerolog.DebugLevel {
-		logger.Debug().Msgf(message, args...)
+		log.Debug().Msgf(message, args...)
 	}
 }
 
 func Warn(message string, args ...interface{}) {
 	if logger.GetLevel() == zerolog.WarnLevel {
-		logger.Warn().Msgf(message, args...)
+		log.Warn().Msgf(message, args...)
 	}
 }
 
 func Error(message string, args ...interface{}) {
 	if logger.GetLevel() == zerolog.ErrorLevel {
-		logger.Error().Msgf(message, args...)
+		log.Error().Msgf(message, args...)
 	}
 }
 
 func Fatal(message string, args ...interface{}) {
-	logger.Fatal().Msgf(message, args)
+	log.Fatal().Msgf(message, args)
 	os.Exit(1)
 }
 
 func Log(message string, args ...interface{}) {
 	if len(args) == 0 {
-		logger.Info().Msg(message)
+		log.Info().Msg(message)
 	} else {
-		logger.Info().Msgf(message, args...)
+		log.Info().Msgf(message, args...)
 	}
 }
