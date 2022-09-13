@@ -9,10 +9,10 @@ import (
 
 func ExamplesRoutes(router *chi.Mux, db *database.DB) {
 	repo := repository.NewGormRepository(db)
-	exmCrtl := controllers.NewHandler(repo)
+	exampleCtrl := controllers.NewExampleHandler(repo)
 	router.Group(func(r chi.Router) {
-		r.Get("/test", exmCrtl.GetData)
-		r.Post("/test", exmCrtl.CreateData)
+		r.Get("/test", exampleCtrl.GetData)
+		r.Post("/test", exampleCtrl.CreateData)
 
 	})
 }

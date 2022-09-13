@@ -14,7 +14,4 @@ type ResponseFormat struct {
 func FormattedResponse(w http.ResponseWriter, data *ResponseFormat) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(&data)
-
 }
-
-

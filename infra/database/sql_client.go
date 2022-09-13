@@ -1,7 +1,7 @@
 package database
 
 import (
-	"chi-boilerplate/infra/logger"
+	logger "chi-boilerplate/infra/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"time"
@@ -13,20 +13,19 @@ type DB struct {
 
 func DBConnection(dsn string) (*DB, error) {
 
-	//logMode := viper.GetBool("DB_LOG_MODE")
 	//	debug := viper.GetBool("DEBUG")
 	//	loglevel := logger.Silent
 	//
-	//	if logMode {
-	//		loglevel = logger.Info
-	//	}
+	//
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
 		PreferSimpleProtocol: true, // disables implicit prepared statement usage
-	}), &gorm.Config{})
+	}), &gorm.Config{
+		//Logger: log.Default.LogMode(logLevel),
+	})
 
 	if err != nil {
-		logger.Fatalf("%v", err)
+		logger.Fatal("%v", err)
 	}
 	sqlDB, err := db.DB()
 	sqlDB.SetConnMaxIdleTime(time.Minute * 1)
@@ -35,13 +34,12 @@ func DBConnection(dsn string) (*DB, error) {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 	err = sqlDB.Ping()
 	if err != nil {
-		logger.Fatalf("%v", err)
+		logger.Fatal("%v", err)
 	}
 
 	return &DB{Database: db}, nil
 }
 
-//
 //func ConnectDB() error {
 //	//logMode := viper.GetBool("DB_LOG_MODE")
 //	//debug := viper.GetBool("DEBUG")

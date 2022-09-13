@@ -16,13 +16,13 @@ func SetupConfig() error {
 
 	viper.SetConfigFile(".env")
 	if err := viper.ReadInConfig(); err != nil {
-		logger.Errorf("Error to reading config file, %s", err)
+		logger.Error("Error to reading config file, %s", err)
 		return err
 	}
 
 	err := viper.Unmarshal(&configuration)
 	if err != nil {
-		logger.Errorf("error to decode, %v", err)
+		logger.Error("error to decode, %v", err)
 		return err
 	}
 

@@ -8,16 +8,16 @@ import (
 	"strconv"
 )
 
-type EmpHandler struct {
+type ExampleHandler struct {
 	repo repository.ExampleRepo
 }
 
-func NewHandler(repo repository.ExampleRepo) *EmpHandler {
-	return &EmpHandler{
+func NewExampleHandler(repo repository.ExampleRepo) *ExampleHandler {
+	return &ExampleHandler{
 		repo: repo,
 	}
 }
-func (h *EmpHandler) GetData(w http.ResponseWriter, request *http.Request) {
+func (h *ExampleHandler) GetData(w http.ResponseWriter, request *http.Request) {
 	q := request.URL.Query()
 	limit, _ := strconv.Atoi(q.Get("limit"))
 	offset, _ := strconv.Atoi(q.Get("offset"))
@@ -27,11 +27,11 @@ func (h *EmpHandler) GetData(w http.ResponseWriter, request *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(&data)
 }
-func (h *EmpHandler) CreateData(w http.ResponseWriter, request *http.Request) {
+
+func (h *ExampleHandler) CreateData(w http.ResponseWriter, request *http.Request) {
 	example := new(models.Example)
 	err := json.NewDecoder(request.Body).Decode(&example)
 	if err != nil {

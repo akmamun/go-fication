@@ -7,11 +7,9 @@ require (
 	github.com/go-chi/cors v1.2.1
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/rs/zerolog v1.15.0
-	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.10.1
 	gorm.io/driver/postgres v1.3.9
 	gorm.io/gorm v1.23.7
-	gorm.io/plugin/dbresolver v1.2.3
 )
 
 require (
