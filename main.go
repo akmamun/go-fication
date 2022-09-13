@@ -19,7 +19,7 @@ func main() {
 		logger.Error("%v", err)
 	}
 
-	db, err := database.DBConnection("postgres://mamun:123@localhost:5432/test_pg_go")
+	db, err := database.DBConnection(config.GetDNSConfig())
 	if err != nil {
 		logger.Fatal("%v", err)
 	}
