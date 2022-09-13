@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"go-fication/helpers/pagination"
+	"github.com/akmamun/gorm-pagination/pagination"
 	"go-fication/models"
 )
 
@@ -13,7 +13,7 @@ type ExampleRepo interface {
 func (r *GormRepository) GetExamples(limit, offset int64) (res interface{}, err error) {
 	var example []*models.Example
 	res = pagination.Paginate(&pagination.Param{
-		DB:      r.db,
+		DB:      r.db.Database,
 		Limit:   limit,
 		Offset:  offset,
 		OrderBy: "id ASC",
