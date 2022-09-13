@@ -157,8 +157,8 @@ func (e *Example) TableName() string {
 package migrations
 
 import (
-	"chi-boilerplate/models"
-	"chi-boilerplate/infra/database"
+	"go-fication/models"
+	"go-fication/infra/database"
 )
 
 func Migrate() {
@@ -177,7 +177,7 @@ func Migrate() {
 package controllers
 
 import (
-  "chi-boilerplate/models"
+  "go-fication/models"
   "encoding/json"
   "net/http"
 )
@@ -207,7 +207,7 @@ func GetData(w http.ResponseWriter, request *http.Request) {
 package routers
 
 import (
-  "chi-boilerplate/controllers"
+  "go-fication/controllers"
   "github.com/go-chi/chi/v5"
 )
 
