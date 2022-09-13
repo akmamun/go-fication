@@ -87,40 +87,47 @@ Follow these steps:
 - Check Application health available on [0.0.0.0:8000/health](http://0.0.0.0:8000/health)
 
 ### Boilerplate Structure
-<<pre><font color="#2A7BDE"><b>.</b></font>
-├── <font color="#2A7BDE"><b>controllers</b></font>
+<pre>├── <font color="#3465A4"><b>config</b></font>
+│   ├── config.go
+│   ├── db.go
+│   └── server.go
+├── <font color="#3465A4"><b>controllers</b></font>
 │   └── example_controller.go
+├── docker-compose-dev.yml
+├── docker-compose-prod.yml
+├── Dockerfile
+├── Dockerfile-dev
 ├── go.mod
 ├── go.sum
+├── <font color="#3465A4"><b>helpers</b></font>
+│   ├── json_helper.go
+│   ├── <font color="#3465A4"><b>pagination</b></font>
+│   │   └── pagination.go
+│   └── response.go
+├── <font color="#3465A4"><b>infra</b></font>
+│   ├── <font color="#3465A4"><b>database</b></font>
+│   │   ├── migrate.go
+│   │   └── sql_client.go
+│   └── <font color="#3465A4"><b>logger</b></font>
+│       └── zero_log.go
 ├── LICENSE
 ├── main.go
 ├── Makefile
-├── <font color="#2A7BDE"><b>migrations</b></font>
-│   └── migrations.go
-├── <font color="#2A7BDE"><b>models</b></font>
-│   ├── base_model.go
+├── <font color="#3465A4"><b>migrations</b></font>
+│   └── 20120_example.sql
+├── <font color="#3465A4"><b>models</b></font>
 │   └── example_model.go
-├── <font color="#2A7BDE"><b>pkg</b></font>
-│   ├── <font color="#2A7BDE"><b>config</b></font>
-│   │   ├── config.go
-│   │   ├── db.go
-│   │   └── server.go
-│   ├── <font color="#2A7BDE"><b>database</b></font>
-│   │   └── database.go
-│   ├── <font color="#2A7BDE"><b>helpers</b></font>
-│   │   ├── <font color="#2A7BDE"><b>pagination</b></font>
-│   │   │   └── pagination.go
-│   │   ├── response.go
-│   │   └── search.go
-│   └── <font color="#2A7BDE"><b>logger</b></font>
-│       └── logger.go
 ├── README.md
-├── <font color="#2A7BDE"><b>repository</b></font>
-│   └── example_repo.go
-├── <font color="#2A7BDE"><b>routers</b></font>
-     ├── examples.go
-     ├── index.go 
-     └── router.go</pre>
+├── <font color="#3465A4"><b>repository</b></font>
+│   ├── example_repo.go
+│   └── gorm_repo.go
+├── <font color="#3465A4"><b>routers</b></font>
+│   ├── examples.go
+│   ├── index.go
+│   ├── <font color="#3465A4"><b>middlewares</b></font>
+│   │   └── cors.go
+│   └── router.go
+</pre>
 
 ### Let's Build an API
 
@@ -295,6 +302,6 @@ return dsn
 ### Use Packages
 - [Viper](https://github.com/spf13/viper) - Go configuration with fangs.
 - [Gorm](https://github.com/go-gorm/gorm) - The fantastic ORM library for Golang
-- [Logger](https://github.com/sirupsen/logrus) - Structured, pluggable logging for Go.
+- [Logger](https://github.com/rs/zerolog) - Zero Allocation JSON Logger
 - [Air](https://github.com/cosmtrek/air) - Live reload for Go apps (Docker Development)
 

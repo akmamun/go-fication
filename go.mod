@@ -1,4 +1,4 @@
-module chi-boilerplate
+module go-fication
 
 go 1.17
 

@@ -1,7 +1,7 @@
 package pagination
 
 import (
-	"chi-boilerplate/infra/database"
+	"go-fication/infra/database"
 	"math"
 )
 

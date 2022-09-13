@@ -1,11 +1,11 @@
 package main
 
 import (
-	"chi-boilerplate/config"
-	"chi-boilerplate/infra/database"
-	"chi-boilerplate/infra/logger"
-	"chi-boilerplate/routers"
 	"github.com/spf13/viper"
+	"go-fication/config"
+	"go-fication/infra/database"
+	"go-fication/infra/logger"
+	"go-fication/routers"
 	"net/http"
 	"time"
 )

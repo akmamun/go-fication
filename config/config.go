@@ -1,8 +1,8 @@
 package config
 
 import (
-	"chi-boilerplate/infra/logger"
 	"github.com/spf13/viper"
+	"go-fication/infra/logger"
 )
 
 type Configuration struct {
