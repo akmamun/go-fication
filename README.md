@@ -1,5 +1,5 @@
 # Go Fication
-An API framework written in Golang with chi-route and Gorm
+An API Boilerplate written in Golang with chi-route and Gorm
 
 ## Table of Contents
 - [Motivation](#motivation)
