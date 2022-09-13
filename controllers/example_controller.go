@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"chi-boilerplate/models"
-	"chi-boilerplate/repository"
 	"encoding/json"
+	"go-fication/models"
+	"go-fication/repository"
 	"net/http"
 	"strconv"
 )

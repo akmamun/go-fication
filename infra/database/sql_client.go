@@ -1,7 +1,7 @@
 package database
 
 import (
-	logger "chi-boilerplate/infra/logger"
+	logger "go-fication/infra/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"time"

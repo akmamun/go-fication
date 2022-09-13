@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"chi-boilerplate/helpers/pagination"
-	"chi-boilerplate/models"
+	"go-fication/helpers/pagination"
+	"go-fication/models"
 )
 
 type ExampleRepo interface {

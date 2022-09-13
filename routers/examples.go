@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"chi-boilerplate/controllers"
-	"chi-boilerplate/infra/database"
-	"chi-boilerplate/repository"
 	"github.com/go-chi/chi/v5"
+	"go-fication/controllers"
+	"go-fication/infra/database"
+	"go-fication/repository"
 )
 
 func ExamplesRoutes(router *chi.Mux, db *database.DB) {

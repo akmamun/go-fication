@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"chi-boilerplate/infra/database"
 	"github.com/go-chi/chi/v5"
+	"go-fication/infra/database"
 	"net/http"
 )
 

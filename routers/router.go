@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"chi-boilerplate/infra/database"
-	"chi-boilerplate/routers/middlewares"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"go-fication/infra/database"
+	"go-fication/routers/middlewares"
 )
 
 func SetupRoute(db *database.DB) *chi.Mux {
