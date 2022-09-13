@@ -169,7 +169,41 @@ func Migrate() {
 	}
 }
 ```
-3. [controller](controllers) folder add a file `example_controller.go`
+3. [repository](repository) folder add a file `example_repo.go`
+```go
+package repository
+
+import (
+	"go-fication/helpers/pagination"
+	"go-fication/models"
+)
+
+type ExampleRepo interface {
+	GetExamples(limit, offset int64) (res interface{}, err error)
+	CreateExample(exp *models.Example) error
+}
+
+func (r *GormRepository) GetExamples(limit, offset int64) (res interface{}, err error) {
+	var example []*models.Example
+	res = pagination.Paginate(&pagination.Param{
+		DB:      r.db,
+		Limit:   limit,
+		Offset:  offset,
+		OrderBy: "id ASC",
+	}, &example)
+	return
+}
+func (r *GormRepository) GetExamplesList() (exp []*models.Example, err error) {
+	err = r.db.Database.Find(&exp).Error
+	return
+}
+
+func (r *GormRepository) CreateExample(exp *models.Example) (err error) {
+	err = r.db.Database.Create(exp).Error
+	return
+}
+```
+4. [controller](controllers) folder add a file `example_controller.go`
 - Create API Endpoint 
 - Use any syntax of GORM after `base.DB`, this is wrapper of `*gorm.DB`
 
@@ -177,46 +211,72 @@ func Migrate() {
 package controllers
 
 import (
-  "go-fication/models"
   "encoding/json"
+  "go-fication/models"
+  "go-fication/repository"
   "net/http"
+  "strconv"
 )
 
-func CreateExample(w http.ResponseWriter, request *http.Request) {
+type ExampleHandler struct {
+  repo repository.ExampleRepo
+}
+
+func NewExampleHandler(repo repository.ExampleRepo) *ExampleHandler {
+  return &ExampleHandler{
+    repo: repo,
+  }
+}
+func (h *ExampleHandler) GetData(w http.ResponseWriter, request *http.Request) {
+  q := request.URL.Query()
+  limit, _ := strconv.Atoi(q.Get("limit"))
+  offset, _ := strconv.Atoi(q.Get("offset"))
+
+  data, err := h.repo.GetExamples(int64(limit), int64(offset))
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusBadRequest)
+    return
+  }
+  w.Header().Set("Content-Type", "application/json")
+  json.NewEncoder(w).Encode(&data)
+}
+
+func (h *ExampleHandler) CreateData(w http.ResponseWriter, request *http.Request) {
   example := new(models.Example)
   err := json.NewDecoder(request.Body).Decode(&example)
   if err != nil {
     http.Error(w, err.Error(), http.StatusBadRequest)
     return
   }
-  models.SaveExample(&example)
+  err = h.repo.CreateExample(example)
+  if err != nil {
+    return
+  }
   w.Header().Set("Content-Type", "application/json")
-  json.NewEncoder(w).Encode(&example)
+  json.NewEncoder(w).Encode(example)
 }
-
-func GetData(w http.ResponseWriter, request *http.Request) {
-  var example []models.Example
-  models.GetAll(&example)
-  w.Header().Set("Content-Type", "application/json")
-  json.NewEncoder(w).Encode(&example)
-}
-
 ```
 4. [routers](routers) folder add a file `example.go`
 ```go
 package routers
 
 import (
-  "go-fication/controllers"
   "github.com/go-chi/chi/v5"
+  "go-fication/controllers"
+  "go-fication/infra/database"
+  "go-fication/repository"
 )
 
-func ExamplesRoutes(router *chi.Mux) {
+func ExamplesRoutes(router *chi.Mux, db *database.DB) {
+  repo := repository.NewGormRepository(db)
+  exampleCtrl := controllers.NewExampleHandler(repo)
   router.Group(func(r chi.Router) {
-    r.Post("/test/", controllers.CreateExample)
-    r.Get("/test/", controllers.GetData)
+    r.Get("/test", exampleCtrl.GetData)
+    r.Post("/test", exampleCtrl.CreateData)
+
   })
 }
+
 ```
 5. Finally, register routes to [index.go](routers/index.go)
 ```go
