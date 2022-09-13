@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"log"
+	"go-fication/infra/logger"
 )
 
 type ServerConfiguration struct {
@@ -17,6 +17,6 @@ func ServerConfig() string {
 	viper.SetDefault("SERVER_PORT", "8000")
 
 	appServer := fmt.Sprintf("%s:%s", viper.GetString("SERVER_HOST"), viper.GetString("SERVER_PORT"))
-	log.Print("Server Running at :", appServer)
+	logger.Log("Server Running at %s:", appServer)
 	return appServer
 }
