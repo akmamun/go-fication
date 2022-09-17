@@ -1,8 +1,10 @@
 # Go Fication
-An API framework written in Golang with chi-route and Gorm
+An API Boilerplate written in Golang with chi-route and Gorm. Write restful API with fast development and developer friendly.
 
 ## Table of Contents
-- [Motivation](#motivation)
+
+- [Architecture](#architecture)
+- [Boilerplate Structure](#boilerplate-structure)
 - [Configuration Manage](#configuration-manage)
   - [ENV Manage](#env-manage)
   - [Server Configuration](#server-configuration)
@@ -11,20 +13,33 @@ An API framework written in Golang with chi-route and Gorm
 - [Installation](#installation)
   - [Local Setup Instruction](#local-setup-instruction)
   - [Develop Application in Docker with Live Reload](#develop-application-in-docker-with-live-reload)
-- [Middlewares](#middlewares)
-- [Boilerplate Structure](#boilerplate-structure)
-- [Code Examples](#examples)
 - [Let's Build an API](#lets-build-an-api)
+- [Code Examples](#code-examples)
 - [Deployment](#deployment)
   - [Container Development Build](#container-development-build)
   - [Container Production Build and Up](#container-production-build-and-up)
 - [Useful Commands](#useful-commands)
 - [ENV YAML Configure](#env-yaml-configure)
 - [Use Packages](#use-packages)
-
-### Motivation
-Write restful API with fast development and developer friendly
-
+### Architecture
+#### In this project use 3 layer architecture
+ - Models
+ - Repository
+ - Controllers
+- More About [Uncle Bob’s Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+### Boilerplate Structure
+<pre>├── <font color="#3465A4"><b>config</b></font>
+├── <font color="#3465A4"><b>controllers</b></font>
+├── <font color="#3465A4"><b>helpers</b></font>
+├── <font color="#3465A4"><b>infra</b></font>
+│   ├── <font color="#3465A4">database</font>
+│   └── <font color="#3465A4">logger</font>
+├── <font color="#3465A4"><b>migrations</b></font>
+├── <font color="#3465A4"><b>models</b></font>
+├── <font color="#3465A4"><b>repository</b></font>
+├── <font color="#3465A4"><b>routers</b></font>
+│   ├── <font color="#3465A4">middlewares</font>
+</pre>
 ### Configuration Manage
 #### ENV Manage
 
@@ -85,49 +100,6 @@ Follow these steps:
 - Docker Composer Installation https://docs.docker.com/compose/install/
 - Run and Develop `make dev`
 - Check Application health available on [0.0.0.0:8000/health](http://0.0.0.0:8000/health)
-
-### Boilerplate Structure
-<pre>├── <font color="#3465A4"><b>config</b></font>
-│   ├── config.go
-│   ├── db.go
-│   └── server.go
-├── <font color="#3465A4"><b>controllers</b></font>
-│   └── example_controller.go
-├── docker-compose-dev.yml
-├── docker-compose-prod.yml
-├── Dockerfile
-├── Dockerfile-dev
-├── go.mod
-├── go.sum
-├── <font color="#3465A4"><b>helpers</b></font>
-│   ├── json_helper.go
-│   ├── <font color="#3465A4"><b>pagination</b></font>
-│   │   └── pagination.go
-│   └── response.go
-├── <font color="#3465A4"><b>infra</b></font>
-│   ├── <font color="#3465A4"><b>database</b></font>
-│   │   ├── migrate.go
-│   │   └── sql_client.go
-│   └── <font color="#3465A4"><b>logger</b></font>
-│       └── zero_log.go
-├── LICENSE
-├── main.go
-├── Makefile
-├── <font color="#3465A4"><b>migrations</b></font>
-│   └── 20120_example.sql
-├── <font color="#3465A4"><b>models</b></font>
-│   └── example_model.go
-├── README.md
-├── <font color="#3465A4"><b>repository</b></font>
-│   ├── example_repo.go
-│   └── gorm_repo.go
-├── <font color="#3465A4"><b>routers</b></font>
-│   ├── examples.go
-│   ├── index.go
-│   ├── <font color="#3465A4"><b>middlewares</b></font>
-│   │   └── cors.go
-│   └── router.go
-</pre>
 
 ### Let's Build an API
 
@@ -297,6 +269,8 @@ func RegisterRoutes(router *chi.Mux) {
 }
 ```
 - Congratulation, your new endpoint `0.0.0.0:8000/v1/example/`
+### Code Examples
+- [go-fication-examples](https://github.com/akmamun/go-fication-examples)
 
 ### Deployment
 #### Container Development Build
