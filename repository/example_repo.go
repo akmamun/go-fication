@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/akmamun/gorm-pagination/pagination"
+	pagination "github.com/akmamun/gorm-pagination"
 	"go-fication/models"
 )
 
