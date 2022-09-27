@@ -9,8 +9,6 @@ import (
 
 var logger zerolog.Logger
 
-type LogLevel string
-
 func SetLogLevel(level string) {
 	var l zerolog.Level
 
