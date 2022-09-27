@@ -13,3 +13,10 @@ func DecodeJSON(r io.Reader, obj interface{}) error {
 	}
 	return nil
 }
+func JsonString(data interface{}) string {
+	err, _ := json.Marshal(data)
+	if err != nil {
+		return string(err)
+	}
+	return ""
+}

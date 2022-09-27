@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
+	"go-fication/helpers"
+	"go-fication/infra/logger"
 	"go-fication/models"
 	"go-fication/repository"
 	"net/http"
@@ -27,8 +29,10 @@ func (h *ExampleHandler) GetData(w http.ResponseWriter, request *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	logger.Debug(helpers.JsonString(data))
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(&data)
+
 }
 
 func (h *ExampleHandler) CreateData(w http.ResponseWriter, request *http.Request) {
