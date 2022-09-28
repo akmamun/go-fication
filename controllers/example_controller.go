@@ -29,9 +29,8 @@ func (h *ExampleHandler) GetData(w http.ResponseWriter, request *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	logger.Debug(helpers.JsonString(data))
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(&data)
+	logger.DebugJson("data", data)
+	helpers.HttpResponse(data, w)
 
 }
 

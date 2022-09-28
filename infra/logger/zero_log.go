@@ -3,6 +3,7 @@ package logger
 import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"go-fication/helpers"
 	"os"
 	"strings"
 )
@@ -36,6 +37,10 @@ func Info(message string, args ...interface{}) {
 	log.Info().Msgf(message, args...)
 }
 
+func DebugJson(message string, data interface{}) {
+	logger.Debug().RawJSON(message, helpers.ServeJson(data)).Msg("")
+}
+
 func Debug(message string, args ...interface{}) {
 	logger.Debug().Msgf(message, args...)
 }
@@ -54,9 +59,5 @@ func Fatal(message string, args ...interface{}) {
 }
 
 func Log(message string, args ...interface{}) {
-	if len(args) == 0 {
-		log.Info().Msg(message)
-	} else {
-		log.Info().Msgf(message, args...)
-	}
+	log.Info().Msgf(message, args...)
 }
