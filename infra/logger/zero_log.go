@@ -59,5 +59,9 @@ func Fatal(message string, args ...interface{}) {
 }
 
 func Log(message string, args ...interface{}) {
-	log.Info().Msgf(message, args...)
+	if len(args) == 0 {
+		log.Info().Msg(message)
+	} else {
+		log.Info().Msgf(message, args...)
+	}
 }
