@@ -5,7 +5,6 @@ import (
 	"go-fication/config"
 	"go-fication/infra/database"
 	"go-fication/infra/logger"
-	"go-fication/migrations"
 	"go-fication/routers"
 	"net/http"
 	"time"
@@ -27,7 +26,8 @@ func main() {
 		logger.Fatal("%v", err)
 	}
 	//later remove auto migration
-	migrations.Migrate(db)
+	// migrations.Migrate(db)
+	database.Migrate()
 
 	router := routers.SetupRoute(db)
 	server := http.Server{
