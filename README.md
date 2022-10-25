@@ -339,3 +339,24 @@ return dsn
 - [Logger](https://github.com/rs/zerolog) - Zero Allocation JSON Logger
 - [Air](https://github.com/cosmtrek/air) - Live reload for Go apps (Docker Development)
 
+
+## Migration with golang-migrate
+## Download migrate to local directory
+```bash
+curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.2/migrate.linux-amd64.tar.gz | tar xz -- migrate
+```
+
+## Migrate (local)
+```bash
+./migrate -database ${MASTER_DB_URL} -path infra/database/migrations up
+```
+
+## Migrate (in debug container)
+```bash
+/usr/local/bin/migrate
+```
+
+## Create a new migration
+```bash
+./migrate create -ext sql -dir infra/database/migrations -seq name_of_migration
+```
