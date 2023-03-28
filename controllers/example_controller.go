@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"go-fication/models"
 	"go-fication/repository"
 	"net/http"
-	"strconv"
 )
 
 type ExampleHandler struct {
@@ -17,13 +17,16 @@ func NewExampleHandler(repo repository.ExampleRepo) *ExampleHandler {
 		repo: repo,
 	}
 }
-func (h *ExampleHandler) GetData(w http.ResponseWriter, request *http.Request) {
-	q := request.URL.Query()
-	limit, _ := strconv.Atoi(q.Get("limit"))
-	offset, _ := strconv.Atoi(q.Get("offset"))
 
-	data, err := h.repo.GetExamples(int64(limit), int64(offset))
+func (h ExampleHandler) GetData(w http.ResponseWriter, request *http.Request) {
+	//q := request.URL.Query()
+	//limit, _ := strconv.Atoi(q.Get("limit"))
+	//offset, _ := strconv.Atoi(q.Get("offset"))
+
+	data, err := h.repo.GetExamplesList()
+	//data, err := h.repo.GetExamples(int64(limit), int64(offset))
 	if err != nil {
+		fmt.Print("LOG ERROR DATA")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}

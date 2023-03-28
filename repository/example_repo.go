@@ -7,6 +7,7 @@ import (
 
 type ExampleRepo interface {
 	GetExamples(limit, offset int64) (res interface{}, err error)
+	GetExamplesList() (res interface{}, err error)
 	CreateExample(exp *models.Example) error
 }
 
@@ -20,8 +21,9 @@ func (r *GormRepository) GetExamples(limit, offset int64) (res interface{}, err 
 	}, &example)
 	return
 }
-func (r *GormRepository) GetExamplesList() (exp []*models.Example, err error) {
-	err = r.db.Database.Find(&exp).Error
+func (r *GormRepository) GetExamplesList() (res interface{}, err error) {
+	var example []*models.Example
+	res = r.db.Database.Find(&example).Error
 	return
 }
 

@@ -6,6 +6,7 @@ import (
 	"go-fication/infra/database"
 	"go-fication/infra/logger"
 	"go-fication/migrations"
+	"go-fication/repository"
 	"go-fication/routers"
 	"net/http"
 	"time"
@@ -31,8 +32,9 @@ func main() {
 	}
 	//later remove auto migration
 	migrations.Migrate(db)
+	repository.NewGormRepository(db)
+	router := routers.SetupRoute()
 
-	router := routers.SetupRoute(db)
 	server := http.Server{
 		Addr:              config.ServerConfig(),
 		Handler:           router,
