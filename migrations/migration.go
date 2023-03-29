@@ -1,11 +1,11 @@
 package migrations
 
 import (
-	"go-fication/infra/database"
 	"go-fication/models"
+	"go-fication/repository"
 )
 
-func Migrate(db *database.DB) {
+func Migrate(db *repository.DB) {
 	var migrationModels = []interface{}{&models.Example{}}
 	err := db.Database.AutoMigrate(migrationModels...)
 	if err != nil {

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"go-fication/infra/logger"
+	"go-fication/repository"
+	"net/http"
 )
 
 type ServerConfiguration struct {
@@ -12,11 +14,17 @@ type ServerConfiguration struct {
 	LimitCountPerRequest int64
 }
 
-func ServerConfig() string {
+func HttpServerConfig() string {
 	viper.SetDefault("SERVER_HOST", "0.0.0.0")
 	viper.SetDefault("SERVER_PORT", "8000")
 
-	appServer := fmt.Sprintf("%s:%s", viper.GetString("SERVER_HOST"), viper.GetString("SERVER_PORT"))
-	logger.Log("Server Running at %s:", appServer)
-	return appServer
+	httpServer := fmt.Sprintf("%s:%s", viper.GetString("SERVER_HOST"), viper.GetString("SERVER_PORT"))
+	logger.Log("Server Running at %s:", httpServer)
+	return httpServer
+}
+
+type HttpServer struct {
+	*http.Server
+	Cfg          *viper.Viper
+	PgRepository *repository.GormRepository
 }

@@ -1,14 +1,18 @@
 package repository
 
 import (
-	"go-fication/infra/database"
+	"go-fication/infra/logger"
 )
 
 type GormRepository struct {
-	db *database.DB
+	db *DB
 }
 
-func NewGormRepository(db *database.DB) *GormRepository {
+func NewGormRepository() *GormRepository {
+	db, err := DBConnection()
+	if err != nil {
+		logger.Fatal("%v", err)
+	}
 	return &GormRepository{
 		db: db,
 	}

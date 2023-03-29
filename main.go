@@ -3,9 +3,7 @@ package main
 import (
 	"github.com/spf13/viper"
 	"go-fication/config"
-	"go-fication/infra/database"
 	"go-fication/infra/logger"
-	"go-fication/migrations"
 	"go-fication/repository"
 	"go-fication/routers"
 	"net/http"
@@ -22,26 +20,27 @@ func main() {
 
 	logger.SetLogLevel(logLevel)
 
-	if err := config.SetupConfig(); err != nil {
-		logger.Error("%v", err)
-	}
-
-	db, err := database.DBConnection(config.GetDNSConfig())
+	cfg, err := config.LoadConfig()
 	if err != nil {
-		logger.Fatal("%v", err)
+		panic(err)
 	}
+	//db, err := repository.DBConnection(config.GetDNSConfig())
+	//if err != nil {
+	//	logger.Fatal("%v", err)
+	//}
 	//later remove auto migration
-	migrations.Migrate(db)
-	repository.NewGormRepository(db)
-	router := routers.SetupRoute()
+	//migrations.Migrate(db)
 
-	server := http.Server{
-		Addr:              config.ServerConfig(),
-		Handler:           router,
+	repo := repository.NewGormRepository() //future pass all config to repository
+	routeHandler := routers.SetupRoute()
+	serverConfig := &http.Server{
+		Addr:              config.HttpServerConfig(),
+		Handler:           routeHandler,
 		ReadTimeout:       5 * time.Second,
 		WriteTimeout:      5 * time.Second,
 		IdleTimeout:       30 * time.Second,
 		ReadHeaderTimeout: 2 * time.Second,
 	}
-	logger.Fatal("%v", server.ListenAndServe())
+	httpServer := config.HttpServer{Server: serverConfig, Cfg: cfg, PgRepository: repo}
+	logger.Fatal("%v", httpServer.ListenAndServe())
 }

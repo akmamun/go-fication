@@ -1,6 +1,7 @@
-package database
+package repository
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	logger "go-fication/infra/logger"
 	"gorm.io/driver/postgres"
@@ -13,15 +14,16 @@ type DB struct {
 	Database *gorm.DB
 }
 
-func DBConnection(dsn string) (*DB, error) {
-
+func DBConnection() (*DB, error) {
+	masterDBDSN := fmt.Sprintf(
+		"host=postgres_db user=dbuser password=password123 dbname=test_gofication_db port=5432 sslmode=disable")
 	logMode := viper.GetBool("MASTER_DB_LOG_MODE")
 	loglevel := gormLog.Silent
 	if logMode {
 		loglevel = gormLog.Info
 	}
 	pgConn := postgres.New(postgres.Config{
-		DSN:                  dsn,
+		DSN:                  masterDBDSN,
 		PreferSimpleProtocol: true, // disables implicit prepared statement usage
 	})
 
