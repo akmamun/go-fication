@@ -3,13 +3,16 @@ package logger
 import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"go-fication/helpers"
 	"os"
 	"strings"
 )
 
 var logger zerolog.Logger
 
-type LogLevel string
+func init() {
+	logger = log.With().Timestamp().CallerWithSkipFrameCount(3).Stack().Logger()
+}
 
 func SetLogLevel(level string) {
 	var l zerolog.Level
@@ -27,36 +30,31 @@ func SetLogLevel(level string) {
 		l = zerolog.InfoLevel
 	}
 	zerolog.SetGlobalLevel(l)
-	skipFrameCount := 3
-	logger = zerolog.New(os.Stdout).With().Timestamp().CallerWithSkipFrameCount(zerolog.CallerSkipFrameCount + skipFrameCount).Logger()
+
 }
 
 func Info(message string, args ...interface{}) {
-	if logger.GetLevel() == zerolog.InfoLevel {
-		log.Info().Msgf(message, args...)
-	}
+	log.Info().Msgf(message, args...)
+}
+
+func DebugJson(message string, data interface{}) {
+	logger.Debug().RawJSON(message, helpers.ServeJson(data)).Msg("")
 }
 
 func Debug(message string, args ...interface{}) {
-	if logger.GetLevel() == zerolog.DebugLevel {
-		log.Debug().Msgf(message, args...)
-	}
+	logger.Debug().Msgf(message, args...)
 }
 
 func Warn(message string, args ...interface{}) {
-	if logger.GetLevel() == zerolog.WarnLevel {
-		log.Warn().Msgf(message, args...)
-	}
+	log.Warn().Msgf(message, args...)
 }
 
 func Error(message string, args ...interface{}) {
-	if logger.GetLevel() == zerolog.ErrorLevel {
-		log.Error().Msgf(message, args...)
-	}
+	logger.Error().Msgf(message, args...)
 }
 
 func Fatal(message string, args ...interface{}) {
-	log.Fatal().Msgf(message, args)
+	logger.Fatal().Msgf(message, args)
 	os.Exit(1)
 }
 

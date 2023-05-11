@@ -13,17 +13,14 @@ import (
 
 func main() {
 	viper.SetDefault("SERVER_TIMEZONE", "Asia/Dhaka")
-	viper.SetDefault("LOG_LEVEL", "DEBUG")
-	logLevel := viper.GetString("LOG_LEVEL")
-
 	loc, _ := time.LoadLocation(viper.GetString("SERVER_TIMEZONE"))
 	time.Local = loc
-
-	logger.SetLogLevel(logLevel)
 
 	if err := config.SetupConfig(); err != nil {
 		logger.Error("%v", err)
 	}
+	logLevel := viper.GetString("LOG_LEVEL")
+	logger.SetLogLevel(logLevel)
 
 	db, err := database.DBConnection(config.GetDNSConfig())
 	if err != nil {
